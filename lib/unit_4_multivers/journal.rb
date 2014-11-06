@@ -21,7 +21,7 @@ module Unit4Multivers
       required = [:database]
       opts.fetch(required) { raise ArgumentError, "Missing required options: #{required - opts.keys}" if (required-opts.keys).size > 0 }
 
-      get "/JournalInfoList", opts
+      get "#{opts.fetch(:database)}/JournalInfoList", opts
     end
   end
 end
