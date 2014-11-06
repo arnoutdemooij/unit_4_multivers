@@ -73,6 +73,14 @@ module Unit4Multivers
       get uri, opts
     end
 
+    def refresh_token!
+      @access_token = access_token.refresh!
+    end
+
+    def token_expired?
+      access_token.expired?
+    end
+
 
     private
       def oauth_client
