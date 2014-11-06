@@ -31,10 +31,9 @@ Request an access token based on the code you received from unit 4 multivers
     client.request_access_token(code)
 
 Make requests with the client when authenticated:
-
     client.administrations
 
-If you need to call an url that isn't covered by the gem's methods, make a custom request:
+If you need to call a url that isn't covered by the gem's methods, make a custom request:
 
     client.custom_request(uri, opts = {})
 
@@ -44,7 +43,7 @@ If you need to call an url that isn't covered by the gem's methods, make a custo
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/exact_online_rest_api/fork )
+1. Fork it ( https://github.com/[my-github-username]/unit_4_multivers/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
