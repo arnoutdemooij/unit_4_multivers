@@ -34,6 +34,32 @@ Make requests with the client when authenticated:
 
     client.administrations
 
+Current supported methods:
+
+    :account_info_list,
+    :account_manager,
+    :account_manager_nvl,
+    :account_nvl,
+    :account_nvl_with_project_accounts,
+    :account_type_nvl,
+    :administrations,
+    :administration_group_nvl,
+    :administration_info_list,
+    :customer_info,
+    :customer_info_list,
+    :customer_invoice_info_list,
+    :journal_info,
+    :journal_info_list,
+    :product,
+    :product_info,
+    :product_info_list,
+    :product_nvl,
+    :project_nvl,
+    :project_info,
+    :supplier_info,
+    :supplier_info_list,
+    :supplier_invoice_info_list
+
 If you need to call a url that isn't covered by the gem's methods, make a custom request:
 
     client.custom_request(uri, opts = {})
