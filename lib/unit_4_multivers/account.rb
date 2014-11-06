@@ -35,7 +35,7 @@ module Unit4Multivers
       get "#{opts.fetch(:database)}/AccountNVL/WithProjectAccounts/#{fiscal_year}}", opts
     end
 
-    def account_type_nvl
+    def account_type_nvl(opts = {})
       required = [:database]
 
       opts.fetch(required) { raise ArgumentError, "Missing required options: #{required - opts.keys}" if (required-opts.keys).size > 0 }
