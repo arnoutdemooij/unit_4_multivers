@@ -21,8 +21,8 @@ module Unit4Multivers
     #attr_accessor :division_id, :database_name
 
     def initialize(opts)
-      missing = [:consumer_key, :consumer_secret] - opts.keys
-      opts.fetch(:consumer_key, :consumer_secret) { raise ArgumentError, "Missing required options: #{missing.join(',')}" if missing.size > 0 }
+      required = [:consumer_key, :consumer_secret]
+      opts.fetch(required) { raise ArgumentError, "Missing required options: #{required-opts.keys}" if (required-opts.keys).size > 0 }
 
       @consumer_key = opts[:consumer_key]
       @consumer_secret = opts[:consumer_secret]
