@@ -21,7 +21,7 @@ module Unit4Multivers
     #attr_accessor :division_id, :database_name
 
     def initialize(opts)
-      #missing = [:consumer_key, :consumer_secret] - opts.keys
+      missing = [:consumer_key, :consumer_secret] - opts.keys
       opts.fetch(:consumer_key, :consumer_secret) { raise ArgumentError, "Missing required options: #{missing.join(',')}" if missing.size > 0 }
 
       @consumer_key = opts[:consumer_key]
@@ -57,11 +57,15 @@ module Unit4Multivers
     end
 
     def request_token_url(opts={})
-      oauth_client.auth_code.authorize_url(:redirect_uri => opts[:redirect_uri] || 'http://127.0.0.1:3000/oauth2/exactonline/callback/', scope: "http://UNIT4.Multivers.API/Web/WebApi/*")
+      required = [:redirect_uri]
+      opts.fetch(required) { raise ArgumentError, "Missing required options: #{required-opts.keys}" if (required-opts.keys).size > 0 }
+      oauth_client.auth_code.authorize_url(:redirect_uri => opts[:redirect_uri], scope: "http://UNIT4.Multivers.API/Web/WebApi/*")
     end
 
     def request_access_token(code, opts={})
-      @access_token = oauth_client.auth_code.get_token(code, :redirect_uri => opts[:redirect_uri] || 'http://127.0.0.1:3000/oauth2/exactonline/callback/')
+      required = [:redirect_uri]
+      opts.fetch(required) { raise ArgumentError, "Missing required options: #{required-opts.keys}" if (required-opts.keys).size > 0 }
+      @access_token = oauth_client.auth_code.get_token(code, :redirect_uri => opts[:redirect_uri])
     end
 
     # Make a custom request
