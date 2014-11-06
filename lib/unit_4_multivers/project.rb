@@ -4,14 +4,14 @@ module Unit4Multivers
       required = [:database]
       opts.fetch(required) { raise ArgumentError, "Missing required options: #{required - opts.keys}" if (required-opts.keys).size > 0 }
 
-      get "#{opts.fetch(:database)}/ProjectNVL", opts
+      get "/#{opts.fetch(:database)}/ProjectNVL", opts
     end
 
     def project_info(opts = {})
       required = [:database, :project_id]
       opts.fetch(required) { raise ArgumentError, "Missing required options: #{required - opts.keys}" if (required-opts.keys).size > 0 }
 
-      get "#{opts.fetch(:database)}/ProdjectInfo/#{opts.fetch(:project_id)}", opts
+      get "/#{opts.fetch(:database)}/ProdjectInfo/#{opts.fetch(:project_id)}", opts
     end
   end
 end

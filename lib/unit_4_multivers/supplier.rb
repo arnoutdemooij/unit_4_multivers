@@ -3,13 +3,13 @@ module Unit4Multivers
     def supplier_info(opts = {})
       required = [:database, :supplier_id]
       opts.fetch(required) { raise ArgumentError, "Missing required options: #{required - opts.keys}" if (required-opts.keys).size > 0 }
-      get "#{opts.fetch(:database)}/SupplierInfo/#{opts.fetch(:supplier_id)}", opts
+      get "/#{opts.fetch(:database)}/SupplierInfo/#{opts.fetch(:supplier_id)}", opts
     end
 
     def supplier_info_list(opts = {})
       required = [:database]
       opts.fetch(required) { raise ArgumentError, "Missing required options: #{required - opts.keys}" if (required-opts.keys).size > 0 }
-      get "#{opts.fetch(:database)}/SupplierInfoList", opts
+      get "/#{opts.fetch(:database)}/SupplierInfoList", opts
     end
 
 
