@@ -24,13 +24,14 @@ Initialize a new client with consumer_key and consumer_secret
 
 Request a token url and redirect the user to the api for approval
 
-    client.request_token_url
+    client.request_token_url(redirect_uri: 'http://127.0.0.1:3000/oauth2/unit_4/callback/')
 
 Request an access token based on the code you received from unit 4 multivers
 
-    client.request_access_token(code)
+    client.request_access_token(code, redirect_uri: 'http://127.0.0.1:3000/oauth2/unit_4/callback/')
 
 Make requests with the client when authenticated:
+
     client.administrations
 
 If you need to call a url that isn't covered by the gem's methods, make a custom request:
@@ -43,7 +44,7 @@ If you need to call a url that isn't covered by the gem's methods, make a custom
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/unit_4_multivers/fork )
+1. Fork it ( https://github.com/LaurensN/unit_4_multivers/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
