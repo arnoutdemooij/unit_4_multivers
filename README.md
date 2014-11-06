@@ -67,6 +67,12 @@ If you need to call a url that isn't covered by the gem's methods, make a custom
 
     client.custom_request("/AdministrationNVL")
 
+If you want to add params to your query, add them to the params hash in the method options (this works the same for all available methods):
+
+    client.custom_request("/AdministrationNVL", { params: { fiscalYear: 'XXXX' } })
+
+
+
 
 ## Contributing
 
