@@ -2,13 +2,15 @@ module Unit4Multivers
   class Client
     def supplier_info(opts = {})
       required = [:database, :supplier_id]
-      opts.fetch(required) { raise ArgumentError, "Missing required options: #{required - opts.keys}" if (required-opts.keys).size > 0 }
+      check_required_parameters(required, opts)
+
       get "/#{opts.fetch(:database)}/SupplierInfo/#{opts.fetch(:supplier_id)}", opts
     end
 
     def supplier_info_list(opts = {})
       required = [:database]
-      opts.fetch(required) { raise ArgumentError, "Missing required options: #{required - opts.keys}" if (required-opts.keys).size > 0 }
+      check_required_parameters(required, opts)
+
       get "/#{opts.fetch(:database)}/SupplierInfoList", opts
     end
 

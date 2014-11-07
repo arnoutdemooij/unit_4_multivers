@@ -22,7 +22,7 @@ module Unit4Multivers
 
     def initialize(opts)
       required = [:consumer_key, :consumer_secret]
-      opts.fetch(required) { raise ArgumentError, "Missing required options: #{required-opts.keys}" if (required-opts.keys).size > 0 }
+      check_required_parameters(required, opts)
 
       @consumer_key = opts[:consumer_key]
       @consumer_secret = opts[:consumer_secret]
@@ -58,13 +58,15 @@ module Unit4Multivers
 
     def request_token_url(opts={})
       required = [:redirect_uri]
-      opts.fetch(required) { raise ArgumentError, "Missing required options: #{required-opts.keys}" if (required-opts.keys).size > 0 }
+      check_required_parameters(required, opts)
+
       oauth_client.auth_code.authorize_url(:redirect_uri => opts[:redirect_uri], scope: "http://UNIT4.Multivers.API/Web/WebApi/*")
     end
 
     def request_access_token(code, opts={})
       required = [:redirect_uri]
-      opts.fetch(required) { raise ArgumentError, "Missing required options: #{required-opts.keys}" if (required-opts.keys).size > 0 }
+      check_required_parameters(required, opts)
+
       @access_token = oauth_client.auth_code.get_token(code, :redirect_uri => opts[:redirect_uri])
     end
 
@@ -79,6 +81,10 @@ module Unit4Multivers
 
     def token_expired?
       access_token.expired?
+    end
+
+    def check_required_parameters(required, params)
+      params.fetch(required) { raise ArgumentError, "Missing required parameters: #{required - params.keys}" if (required-params.keys).size > 0 }
     end
 
 
@@ -132,4 +138,5 @@ module Unit4Multivers
       end
   end
 end
+
 
