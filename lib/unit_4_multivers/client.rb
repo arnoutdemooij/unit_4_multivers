@@ -101,6 +101,7 @@ module Unit4Multivers
       end
 
       def get(path, headers={})
+        @access_token.refresh_token! if access_token.expired?
         extract_response_body raw_get(path, headers)
       end
 
