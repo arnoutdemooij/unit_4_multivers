@@ -4,6 +4,7 @@ require "unit_4_multivers/customer"
 require "unit_4_multivers/journal"
 require "unit_4_multivers/product"
 require "unit_4_multivers/project"
+require "unit_4_multivers/openingbalance"
 require "unit_4_multivers/supplier"
 require "unit_4_multivers/version"
 
