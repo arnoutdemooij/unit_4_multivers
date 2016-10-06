@@ -5,7 +5,7 @@ module Unit4Multivers
       required = [:database, :customer_id]
       check_required_parameters(required, opts)
 
-      get "/#{opts.fetch(:database)}/CustomerInfo/#{customer_id}"
+      get "/#{opts.fetch(:database)}/CustomerInfo/#{opts.fetch(:customer_id)}"
     end
 
     def customer_info_list(opts = {})
@@ -21,7 +21,6 @@ module Unit4Multivers
 
       get "/#{opts.fetch(:database)}/CustomerInvoiceInfoList/#{id}", opts
     end
-
 
   end
 end
