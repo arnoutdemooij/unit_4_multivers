@@ -10,7 +10,7 @@ require "unit_4_multivers/version"
 
 module Unit4Multivers
   class Client
-    API_VERSION = 'v14'
+    API_VERSION = 'v182'
     # Sets or gets the api_version to be used in API calls
     #"
     # @return [String]
@@ -35,8 +35,9 @@ module Unit4Multivers
       @database_name = opts[:database_name]
 
       @api_version = API_VERSION
-    end
 
+      @token_file_path = opts[:token_file_path]
+    end
 
     def authorize(token, secret, opts={})
       request_token = OAuth2::RequestToken.new(client, token, secret)
@@ -47,10 +48,14 @@ module Unit4Multivers
     end
 
 
-    def reconnect(token, secret)
-      @token = token
-      @secret = secret
-      access_token
+    def load_token_from_file
+      return unless @token_file_path.present?
+      @access_token = OAuth2::AccessToken.from_hash(oauth_client, YAML::load_file(@token_file_path))
+    end
+
+    def save_token_to_file
+      return unless @token_file_path.present? && access_token.present?
+      File.open(@token_file_path, 'w') { |file| file.write access_token.to_hash.to_yaml }
     end
 
     def connected?
@@ -78,6 +83,7 @@ module Unit4Multivers
 
     def refresh_token!
       @access_token = access_token.refresh!
+      save_token_to_file
     end
 
     def token_expired?
@@ -88,6 +94,9 @@ module Unit4Multivers
       params.fetch(required) { raise ArgumentError, "Missing required parameters: #{required - params.keys}" if (required-params.keys).size > 0 }
     end
 
+    def access_token
+      @access_token
+    end
 
     private
       def oauth_client
@@ -97,12 +106,8 @@ module Unit4Multivers
             :authorize_url => 'OAuth/Authorize/')
       end
 
-      def access_token
-        @access_token #||= OAuth2::AccessToken.new(oauth_client, @token, @secret)
-      end
-
       def get(path, headers={})
-        @access_token.refresh_token! if access_token.expired?
+        self.refresh_token! if access_token.expired?
         extract_response_body raw_get(path, headers)
       end
 
@@ -115,14 +120,24 @@ module Unit4Multivers
         access_token.get(uri, headers)
       end
 
-      def post(path, body='', headers={})
-        extract_response_body raw_post(path, body, headers)
+      def post(path, options={})
+        extract_response_body raw_post(path, options)
       end
 
-      def raw_post(path, body='', headers={})
-        headers.merge!(:headers => { 'User-Agent' => "Unit4Multivers gem" })
+      def raw_post(path, options={})
+        options.merge!(:headers => { 'User-Agent' => "Unit4Multivers gem" })
         uri = "api#{path}"
-        access_token.post(uri, body, headers)
+        access_token.post(uri, options)
+      end
+
+      def put(path, options={})
+        extract_response_body raw_put(path, options)
+      end
+
+      def raw_put(path, options={})
+        options.merge!(:headers => { 'User-Agent' => "Unit4Multivers gem" })
+        uri = "api#{path}"
+        access_token.put(uri, options)
       end
 
       def delete(path, headers={})
