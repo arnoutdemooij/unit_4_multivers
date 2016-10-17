@@ -1,26 +1,24 @@
 module Unit4Multivers
   class Client
 
-    def customer_info(opts = {})
-      required = [:database, :customer_id]
-      check_required_parameters(required, opts)
-
-      get "/#{opts.fetch(:database)}/CustomerInfo/#{opts.fetch(:customer_id)}"
+    def customer_info_list
+      get "/#{database}/CustomerInfoList"
     end
 
-    def customer_info_list(opts = {})
-      required = [:database]
-      check_required_parameters(required, opts)
-
-      get "/#{opts.fetch(:database)}/CustomerInfoList", opts
+    def customer_info customer_id
+      get "/#{database}/CustomerInfo/#{customer_id}"
     end
 
-    def customer_invoice_info_list(opts = {})
-      required = [:database, :id]
-      check_required_parameters(required, opts)
-
-      get "/#{opts.fetch(:database)}/CustomerInvoiceInfoList/#{id}", opts
+    def customer customer_id
+      get "/#{database}/Customer/#{customer_id}"
     end
 
+    def create_customer data
+      post "/#{database}/Customer", data
+    end
+
+    def update_customer customer_id, data
+      put "/#{database}/Customer/#{customer_id}", data
+    end
   end
 end

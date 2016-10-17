@@ -1,6 +1,7 @@
 require "unit_4_multivers/account"
 require "unit_4_multivers/administration"
 require "unit_4_multivers/customer"
+require "unit_4_multivers/customer_invoice"
 require "unit_4_multivers/journal"
 require "unit_4_multivers/product"
 require "unit_4_multivers/project"
@@ -16,10 +17,21 @@ module Unit4Multivers
     # @return [String]
     attr_accessor :api_version
 
-    # Sets or gets the division id to be used in API calls
+    # Sets or gets the database to be used in API calls
     #
     # @return [String]
-    #attr_accessor :division_id, :database_name
+    attr_accessor :database
+
+    # Sets or gets the data format to be used in API calls (json or xml)
+    #
+    # @return [String]
+    attr_accessor :format
+
+    # Sets or gets the api root path
+    #
+    # @return [String]
+    attr_accessor :api_root
+
 
     def initialize(opts)
       required = [:consumer_key, :consumer_secret]
@@ -32,9 +44,10 @@ module Unit4Multivers
       @secret = opts[:secret]
 
       @proxy = opts[:proxy] if opts[:proxy]
-      @database_name = opts[:database_name]
+      @database = opts[:database]
 
       @api_version = API_VERSION
+      @api_root = 'api'
 
       @token_file_path = opts[:token_file_path]
     end
@@ -46,7 +59,6 @@ module Unit4Multivers
       @secret = @access_token.secret
       @access_token
     end
-
 
     def load_token_from_file
       return unless @token_file_path.present?
@@ -99,6 +111,7 @@ module Unit4Multivers
     end
 
     private
+
       def oauth_client
         @oauth_client ||= OAuth2::Client.new(@consumer_key, @consumer_secret,
             :site => { :url => "https://sandbox.api.online.unit4.nl/#{@api_version}/" },
@@ -106,48 +119,51 @@ module Unit4Multivers
             :authorize_url => 'OAuth/Authorize/')
       end
 
-      def get(path, headers={})
+      def content_type
+        "application/#{format.downcase}" if format.present?
+      end
+
+      def base_headers
+        {
+          'User-Agent' => "Unit4Multivers gem",
+          'Accept' => 'application/json'
+        }.merge(content_type.present? ? { 'Content-Type' => content_type } : {})
+      end
+
+      def get path, options={}
         self.refresh_token! if access_token.expired?
-        extract_response_body raw_get(path, headers)
+        extract_response_body raw_get(path, base_headers)
       end
 
-      def raw_get(path, headers={})
-        headers.merge!(:headers => { 'User-Agent' => "Unit4Multivers gem",
-               'Accept' => 'application/json' })
-
-        uri = "api#{path}"
-        p "Getting #{uri}"
-        access_token.get(uri, headers)
+      def raw_get path, headers={}
+        access_token.get("#{api_root}#{path}", headers: headers)
       end
 
-      def post(path, options={})
-        extract_response_body raw_post(path, options)
+      def post path, data, options={}
+        self.refresh_token! if access_token.expired?
+        extract_response_body raw_post(path, data, base_headers)
       end
 
-      def raw_post(path, options={})
-        options.merge!(:headers => { 'User-Agent' => "Unit4Multivers gem" })
-        uri = "api#{path}"
-        access_token.post(uri, options)
+      def raw_post path, data, headers={}
+        access_token.post("#{api_root}#{path}", body: data, headers: headers)
       end
 
-      def put(path, options={})
-        extract_response_body raw_put(path, options)
+      def put path, data, options={}
+        self.refresh_token! if access_token.expired?
+        extract_response_body raw_put(path, data, base_headers)
       end
 
-      def raw_put(path, options={})
-        options.merge!(:headers => { 'User-Agent' => "Unit4Multivers gem" })
-        uri = "api#{path}"
-        access_token.put(uri, options)
+      def raw_put path, data, headers={}
+        access_token.put("#{api_root}#{path}", body: data, headers: headers)
       end
 
-      def delete(path, headers={})
-        extract_response_body raw_delete(path, headers)
+      def delete path, options={}
+        self.refresh_token! if access_token.expired?
+        extract_response_body raw_delete(path, base_headers)
       end
 
-      def raw_delete(path, headers={})
-        headers.merge!(:headers => { 'User-Agent' => "Unit4Multivers gem" })
-        uri = "api#{path}"
-        access_token.delete(uri, headers)
+      def raw_delete path, headers={}
+        access_token.delete("#{api_root}#{path}", headers: headers)
       end
 
       def extract_response_body(resp)
@@ -155,5 +171,3 @@ module Unit4Multivers
       end
   end
 end
-
-
