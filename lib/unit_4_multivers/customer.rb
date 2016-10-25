@@ -20,5 +20,9 @@ module Unit4Multivers
     def update_customer customer_id, data
       put "/#{database}/Customer/#{customer_id}", data
     end
+
+    def delete_customer customer_id
+      delete "/#{database}/Customer/#{customer_id}"
+    end
   end
 end
