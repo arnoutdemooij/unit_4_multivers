@@ -8,6 +8,7 @@ require "unit_4_multivers/product"
 require "unit_4_multivers/project"
 require "unit_4_multivers/openingbalance"
 require "unit_4_multivers/supplier"
+require "unit_4_multivers/bank_account"
 require "unit_4_multivers/version"
 
 module Unit4Multivers
