@@ -34,6 +34,10 @@ module Unit4Multivers
     # @return [String]
     attr_accessor :api_root
 
+    # Sets or gets the oauth subdomain (sandbox.api or api)
+    #
+    # @return [String]
+    attr_accessor :oauth_subdomain
 
     def initialize(opts)
       required = [:consumer_key, :consumer_secret]
@@ -50,6 +54,7 @@ module Unit4Multivers
 
       @api_version = API_VERSION
       @api_root = 'api'
+      @oauth_subdomain = opts[:oauth_subdomain] || 'sandbox.api'
 
       @token_file_path = opts[:token_file_path]
     end
@@ -121,7 +126,7 @@ module Unit4Multivers
 
       def oauth_client
         @oauth_client ||= OAuth2::Client.new(@consumer_key, @consumer_secret,
-            :site => { :url => "https://sandbox.api.online.unit4.nl/#{@api_version}/" },
+            :site => { :url => "https://#{@oauth_subdomain}.online.unit4.nl/#{@api_version}/" },
             :token_url => 'OAuth/Token/',
             :authorize_url => 'OAuth/Authorize/')
       end
