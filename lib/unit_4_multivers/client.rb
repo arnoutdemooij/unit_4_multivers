@@ -62,6 +62,11 @@ module Unit4Multivers
       @access_token
     end
 
+    def logoff
+      @access_token = nil
+      File.open(@token_file_path, 'w') { |file| file.write {}.to_yaml } if @token_file_path.present?
+    end
+
     def load_token_from_file
       return unless @token_file_path.present?
       @access_token = OAuth2::AccessToken.from_hash(oauth_client, YAML::load_file(@token_file_path))
