@@ -64,7 +64,7 @@ module Unit4Multivers
 
     def logoff
       @access_token = nil
-      File.open(@token_file_path, 'w') { |file| file.write {}.to_yaml } if @token_file_path.present?
+      File.open(@token_file_path, 'w') { |file| file.write({}.to_yaml) } if @token_file_path.present?
     end
 
     def load_token_from_file
