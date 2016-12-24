@@ -1,5 +1,6 @@
 require "unit_4_multivers/account"
 require "unit_4_multivers/administration"
+require "unit_4_multivers/organization"
 require "unit_4_multivers/customer"
 require "unit_4_multivers/customer_invoice"
 require "unit_4_multivers/journal"
