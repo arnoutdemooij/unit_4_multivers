@@ -1,52 +1,28 @@
 module Unit4Multivers
   class Client
-    def supplier_info(opts = {})
-      required = [:database, :supplier_id]
-      check_required_parameters(required, opts)
 
-      get "/#{opts.fetch(:database)}/SupplierInfo/#{opts.fetch(:supplier_id)}", opts
+    def supplier_info_list
+      get "/#{database}/SupplierInfoList"
     end
 
-    def supplier_info_list(opts = {})
-      required = [:database]
-      check_required_parameters(required, opts)
-
-      get "/#{opts.fetch(:database)}/SupplierInfoList", opts
+    def supplier_info supplier_id
+      get "/#{database}/SupplierInfo/#{supplier_id}"
     end
 
+    def supplier supplier_id
+      get "/#{database}/Supplier/#{supplier_id}"
+    end
 
+    def create_supplier data
+      post "/#{database}/Supplier", data
+    end
 
-    # API Description
-    # GET api/{database}/SupplierInvoiceInfoList/OpenInvoices/{id}
-    # Gets a list of SupplierInvoiceInfo that matches the specified criteria
+    def update_supplier supplier_id, data
+      put "/#{database}/Supplier/#{supplier_id}", data
+    end
 
-    # GET api/{database}/SupplierInvoiceInfoList/{Id}/{startDate}/{endDate}?invoiceState={invoiceState}
-    # Gets a list of SupplierInvoiceInfo that matches the specified criteria
-    # GET api/{database}/SupplierInvoiceInfoList/{id}/{startDate}/{endDate}?fiscalYear={fiscalYear}&invoiceState={invoiceState}
-    # Gets a list of SupplierInvoiceInfo that matches the specified criteria
-    # GET api/{database}/SupplierInvoiceInfoList/{id}/{startDate}/{endDate}?fiscalYear={fiscalYear}
-    # Gets a list of SupplierInvoiceInfo that matches the specified criteria
-    # GET api/{database}/SupplierInvoiceInfoList/{id}/{invoiceState}?startDate={startDate}&endDate={endDate}
-    # Gets a list of SupplierInvoiceInfo that matches the specified criteria
-    # GET api/{database}/SupplierInvoiceInfoList/{fiscalYear}/{invoiceState}?id={id}&startDate={startDate}&endDate={endDate}
-    # Gets a list of SupplierInvoiceInfo that matches the specified criteria
-    # GET api/{database}/SupplierInvoiceInfoList/{fiscalYear}/{invoiceState}
-    # Gets a list of SupplierInvoiceInfo that matches the specified criteria
-    # GET api/{database}/SupplierInvoiceInfoList/{id}/{fiscalYear}?startDate={startDate}&endDate={endDate}
-    # Gets a list of SupplierInvoiceInfo that matches the specified criteria
-    # GET api/{database}/SupplierInvoiceInfoList/{id}?startDate={startDate}&endDate={endDate}
-    # Gets a list of SupplierInvoiceInfo that matches the specified criteria
-    # GET api/{database}/SupplierInvoiceInfoList/{Id}?invoiceState={invoiceState}
-    # Gets a list of SupplierInvoiceInfo that matches the specified criteria
-    # GET api/{database}/SupplierInvoiceInfoList/{Id}?fiscalYear={fiscalYear}&invoiceState={invoiceState}
-    # Gets a list of SupplierInvoiceInfo that matches the specified criteria
-    # GET api/{database}/SupplierInvoiceInfoList/{id}?fiscalYear={fiscalYear}
-    # Gets a list of SupplierInvoiceInfo that matches the specified criteria
-    # GET api/{database}/SupplierInvoiceInfoList/{Id}
-    # Gets a list of SupplierInvoiceInfo that matches the specified criteria
-
-    def supplier_invoice_info_list(opts = {})
-      get "/SupplierInvoiceInfoList", opts
+    def delete_supplier supplier_id
+      delete "/#{database}/Supplier/#{supplier_id}"
     end
   end
 end
