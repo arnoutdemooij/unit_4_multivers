@@ -1,8 +1,8 @@
 module Unit4Multivers
   class Client
 
-    def customer_invoice_info_list
-      get "/#{database}/CustomerInvoiceInfoList"
+    def customer_invoice_info_list customer_id
+      get "/#{database}/CustomerInvoiceInfoList/#{customer_id}"
     end
 
     def customer_invoice_info customer_invoice_id
