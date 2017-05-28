@@ -1,8 +1,9 @@
 module Unit4Multivers
   class Client
 
-    def customer_invoice_info_list customer_id
-      get "/#{database}/CustomerInvoiceInfoList/#{customer_id}"
+    def customer_invoice_info_list customer_id, invoice_state=nil
+      querystring = { 'invoiceState' => invoice_state }.compact.map { |param, value| "#{param}=#{value}" }.join('&')
+      get "/#{database}/CustomerInvoiceInfoList/#{customer_id}" + (querystring.present? ? "?#{querystring}" : '')
     end
 
     def customer_invoice_info customer_invoice_id
