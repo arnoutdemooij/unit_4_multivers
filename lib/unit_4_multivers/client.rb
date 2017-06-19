@@ -54,7 +54,7 @@ module Unit4Multivers
       @proxy = opts[:proxy] if opts[:proxy]
       @database = opts[:database]
 
-      @api_version = API_VERSION
+      @api_version = opts[:api_version] || API_VERSION
       @api_root = 'api'
       @oauth_subdomain = opts[:oauth_subdomain] || 'sandbox.api'
 
